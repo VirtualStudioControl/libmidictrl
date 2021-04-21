@@ -1,53 +1,41 @@
-BUTTON_LED_OFF = 0x01
-BUTTON_LED_ON = 0x02
-BUTTON_LED_BLINK = 0x03
-
-ROTARY_LED_MODE_SINGLE = 0x00
-ROTARY_LED_MODE_PAN = 0x01
-ROTARY_LED_MODE_FAN = 0x02
-ROTARY_LED_MODE_SPREAD = 0x03
-ROTARY_LED_MODE_TRIM = 0x04
-
-ROTARY_LED_ALL_OFF = 0x00
-ROTARY_LED_00_ON = 0x01
-ROTARY_LED_01_ON = 0x02
-ROTARY_LED_02_ON = 0x03
-ROTARY_LED_03_ON = 0x04
-ROTARY_LED_04_ON = 0x05
-ROTARY_LED_05_ON = 0x06
-ROTARY_LED_06_ON = 0x07
-ROTARY_LED_07_ON = 0x08
-ROTARY_LED_08_ON = 0x09
-ROTARY_LED_09_ON = 0x0A
-ROTARY_LED_10_ON = 0x0B
-ROTARY_LED_11_ON = 0x0C
-ROTARY_LED_12_ON = 0x0D
-ROTARY_LED_00_BLINK = 0x0E
-ROTARY_LED_01_BLINK = 0x0F
-ROTARY_LED_02_BLINK = 0x10
-ROTARY_LED_03_BLINK = 0x11
-ROTARY_LED_04_BLINK = 0x12
-ROTARY_LED_05_BLINK = 0x13
-ROTARY_LED_06_BLINK = 0x14
-ROTARY_LED_07_BLINK = 0x15
-ROTARY_LED_08_BLINK = 0x16
-ROTARY_LED_09_BLINK = 0x17
-ROTARY_LED_10_BLINK = 0x18
-ROTARY_LED_11_BLINK = 0x19
-ROTARY_LED_12_BLINK = 0x1A
-ROTARY_LED_ALL_ON = 0x1B
-ROTARY_LED_ALL_BLINK = 0x1C
 
 class IDevice:
-
+    """
+    Interface declaring methods all devices must implement
+    """
     #region Events
-    def addEventListener(self, control, note, callback):
+    def addEventListener(self, control: int, note:int, callback):
+        """
+        Adds a Event Listener for a MIDI Listener
+
+        :param control: Control Byte to listen for
+        :param note: MIDI Device Index to listen for
+        :param callback: callback function to call
+        :return: None
+        """
         pass
 
     def removeEventListener(self, control, note, callback):
+        """
+        Removes a Event Listener for a MIDI Listener
+
+        :param control: Control Byte to listen for
+        :param note: MIDI Device Index to listen for
+        :param callback: callback function to remove
+        :return: None
+        """
         pass
 
     def callEventListeners(self, control, note, message, deltatime):
+        """
+        Calls the callbacks for all event listeners which meet the criteria
+
+        :param control: Control Byte to listen for
+        :param note: MIDI Device Index to listen for
+        :param message: Full message received
+        :param deltatime: deltatime received with the event
+        :return: None
+        """
         pass
 
     #endregion
@@ -55,19 +43,33 @@ class IDevice:
     #region Controls
 
     def getButtons(self) -> list:
+        """
+        :return: a list of all buttons for this controller
+        """
         return []
 
     def getFaders(self) -> list:
+        """
+        :return: a list of all faders for this controller
+        """
         return []
 
     def getRotaryEncoders(self) -> list:
+        """
+        :return: a list of all rotary encoders for this controller
+        """
         return []
 
     #endregion
 
     #region UIControl
 
-    def setLayer(self, layer : int):
+    def setLayer(self, layer: int):
+        """
+        Sets the active layer of the device
+        :param layer: layer index of the layer to set active
+        :return: None
+        """
         pass
 
     #endregion
@@ -75,12 +77,36 @@ class IDevice:
     #region Feedback
 
     def sendMIDIMessage(self, message):
+        """
+        Sends the given Message to the device
+
+        :param message: Message to send
+        :return: None
+        """
         pass
 
     def setButtonLEDState(self, control, state):
+        """
+        Set the LED State of the given Button control
+
+        **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
+
+        :param control: Button Control to set LED of
+        :param state: State to set the LED to
+        :return: None
+        """
         pass
 
     def setRotaryLEDMode(self, control, mode):
+        """
+        Set the LED Ring Mode of the given Rotary Encoder control
+
+        **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
+
+        :param control: Button Control to set LED of
+        :param state: State to set the LED to
+        :return: None
+        """
         pass
 
     def setRotaryLEDState(self, control, state):
