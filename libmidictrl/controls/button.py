@@ -1,26 +1,24 @@
 from .abstract_control import AbstractControl
 from ..devices.device_interface import *
 
-from ..midi.protocol.constants import *
 
 class Button(AbstractControl):
+    """
+    Simple Button Control
+    """
 
     def __init__(self, device: IDevice, index: int, channel: int, id_in: int, id_out: int, layer: int = 0):
+        """
+        Constructor
+
+        :param device: Device this control is on
+        :param index: Index of the control on the device
+        :param channel: MIDI Channel of this control
+        :param id_in: MIDI Device Index of this Controls events
+        :param id_out: MIDI Device Index of this Controls control commands
+        :param layer: Layer on the device this control is on
+        """
         super().__init__(device, index, channel, id_in, id_out, layer)
 
         self.pressed = False
         self.toggleMode = False
-        self.toggled = False
-
-        self.device.addEventListener(STATUS_NOTE_OFF, self.idIn, self.toggleCallback)
-
-    def toggleCallback(self, msg, deltatime):
-        print("Callback Called:", msg, deltatime)
-        if not self.toggled:
-            self.toggled = True
-            self.device.setButtonLEDState(self, BUTTON_LED_BLINK)
-        else:
-            self.toggled = False
-            self.device.setButtonLEDState(self, BUTTON_LED_OFF)
-
-
