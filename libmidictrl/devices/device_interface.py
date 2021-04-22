@@ -92,7 +92,7 @@ class IDevice:
         **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
 
         :param control: Button Control to set LED of
-        :param state: State to set the LED to
+        :param state: State to set the LED to set
         :return: None
         """
         pass
@@ -103,24 +103,63 @@ class IDevice:
 
         **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
 
-        :param control: Button Control to set LED of
-        :param state: State to set the LED to
+        :param control: Rotary Encoder Control to set LED of
+        :param mode: State to set the LED to set
         :return: None
         """
         pass
 
     def setRotaryLEDState(self, control, state):
+        """
+        Set the LED State of the given Rotary Encoder control.
+
+        **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
+
+        :param control: Rotary Encoder Control to set LED of
+        :param state: State to set the LED to set
+        :return: None
+        """
         pass
 
     def setFaderState(self, control, value):
+        """
+        Set the State of the given Fader control.
+
+        **THIS IS NOT LAYER AWARE. FOR LAYER AWARE SETTING OF LEDS, SEE setButtonValue()**
+
+        :param control: Control to set LED of
+        :param state: State to set the LED to set
+        :return: None
+        """
         pass
 
     def setButtonValue(self, control, value):
+        """
+        Set the Value for the given Control (Layer Aware)
+
+        :param control: Button to set the Value for
+        :param value: Value to set (True or False)
+        :return: None
+        """
         pass
 
     def setFaderValue(self, control, value):
+        """
+        Set the Value for the given Control (Layer Aware)
+
+        :param control: Fader to set the Value for
+        :param value: Value to set (0 to 127)
+        :return: None
+        """
         pass
 
     def setRotaryValue(self, control, value):
+        """
+        Set the Value for the given Control (Layer Aware)
+
+        :param control: Rotary Encoder to set the Value for
+        :param value: Value to set (0 to 127)
+        :return: None
+        """
         pass
     #endregion
