@@ -5,6 +5,9 @@ from .device_interface import IDevice
 
 
 class InputEventHandler(object):
+    """
+    rtmidi Event handler
+    """
     def __init__(self, device: IDevice):
         self.device = device
 
@@ -15,6 +18,12 @@ class InputEventHandler(object):
 
 class AbstractDevice(IDevice):
     def __init__(self, in_port, out_port):
+        """
+        Constructor
+
+        :param in_port: Index of MIDI In Port
+        :param out_port: Index of MIDI Out Port
+        """
         super().__init__()
 
         self.in_port = in_port
@@ -33,6 +42,10 @@ class AbstractDevice(IDevice):
         self._inputEventHandler = None
 
     def open(self):
+        """
+        Open the MIDI ports for this Device
+        :return:
+        """
         self.midiOut = rtmidi.MidiOut()
         self.midiOut.open_port(self.out_port)
 
@@ -46,6 +59,10 @@ class AbstractDevice(IDevice):
         self.isOpen = True
 
     def close(self):
+        """
+        Close the MIDI ports for this Device
+        :return:
+        """
         self.isOpen = False
 
         self.midiIn.close_port()
@@ -58,6 +75,7 @@ class AbstractDevice(IDevice):
 
     # region Events
 
+    # Overrides IDevice
     def addEventListener(self, control: int, note : int, callback):
         print("Adding Callback:", (control & 0b01110000) >> 4, note & 0b01111111)
         if not self.events[(control & 0b01110000) >> 4]:
@@ -67,23 +85,22 @@ class AbstractDevice(IDevice):
 
         self.events[(control & 0b01110000) >> 4][note & 0b01111111].append(callback)
 
+    # Overrides IDevice
     def removeEventListener(self, control: int, note: int, callback):
         if not self.events[(control & 0b01110000) >> 4]:
             return
         self.events[(control & 0b01110000) >> 4][note & 0b01111111].remove(callback)
 
+    # Overrides IDevice
     def callEventListeners(self, control: int, note: int, message: List[int], deltatime):
-        print("Message Recieved:", message, deltatime)
         if not self.events[(control & 0b01110000) >> 4]:
             return
 
-        print("Executing Callbacks:", (self.events[(control & 0b01110000) >> 4][note & 0b01111111]))
         for cb in (self.events[(control & 0b01110000) >> 4][note & 0b01111111]):
-
             cb(message, deltatime)
 
     # endregion
 
+    # Overrides IDevice
     def sendMIDIMessage(self, message):
-        print("Sending Message:", message)
         self.midiOut.send_message(message)

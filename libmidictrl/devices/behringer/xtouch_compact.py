@@ -54,8 +54,16 @@ OPERATION_MODE_MC = 0x01
 #endregion
 
 class XTouchCompact(AbstractDevice):
-
+    """
+    Behringer X-Touch Compact
+    """
     def __init__(self, in_port, out_port):
+        """
+        Constructor
+
+        :param in_port: Index of MIDI In Port
+        :param out_port: Index of MIDI Out Port
+        """
         super().__init__(in_port, out_port)
 
         self.globalChannel = 0x01
@@ -63,7 +71,13 @@ class XTouchCompact(AbstractDevice):
         self.__createControls()
 
     def __createControls(self):
+        """
+        Create controls for this device
 
+        **PRIVAT METHOD. PLEASE DO NOT CALL FROM OUTSIDE OF CONSTRUCTOR FOR THIS DEVICE!**
+
+        :return:
+        """
         widgetIndex = 0
 
         # Layer A
@@ -120,10 +134,17 @@ class XTouchCompact(AbstractDevice):
 
     #region UIControl
 
-    def setOperationMode (self, mode: int):
+    def setOperationMode(self, mode: int):
+        """
+        Set the operation mode for this device
+
+        :param mode: 0 for Standard MIDI Operation, 1 for MC Control emulation
+        :return: None
+        """
         msg = controlChange(self.globalChannel, 127, mode)
         self.sendMIDIMessage(msg)
 
+    #Overrides IDevice
     def setLayer(self, layer : int):
         msg = programChange(self.globalChannel, layer)
         self.sendMIDIMessage(msg)
@@ -131,32 +152,38 @@ class XTouchCompact(AbstractDevice):
     #endregion
 
     # region Feedback
-
+    # Overrides IDevice
     def setButtonLEDState(self, control: Button, state):
         msg = noteOn(self.globalChannel, control.idOut, state)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setFaderState(self, control: Fader, value):
         msg = controlChange(control.channel, control.idIn, value)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setRotaryLEDMode(self, control: RotaryEncoder, mode):
         msg = controlChange(self.globalChannel, control.idMode, mode)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setRotaryLEDState(self, control: RotaryEncoder, state):
         msg = controlChange(self.globalChannel, control.idOut, state)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setButtonValue(self, control: Button, value: bool):
         data = 127 if value else 0
         msg = noteOn(control.channel, control.idIn, data)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setFaderValue(self, control: Fader, value: int):
         msg = controlChange(control.channel, control.idIn, value)
         self.sendMIDIMessage(msg)
 
+    # Overrides IDevice
     def setRotaryValue(self, control: RotaryEncoder, value: int):
         msg = controlChange(control.channel, control.idIn, value)
         self.sendMIDIMessage(msg)
