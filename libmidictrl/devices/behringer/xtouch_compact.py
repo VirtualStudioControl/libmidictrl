@@ -57,18 +57,32 @@ class XTouchCompact(AbstractDevice):
     """
     Behringer X-Touch Compact
     """
-    def __init__(self, in_port, out_port):
+    def __init__(self, device_id, in_port, out_port):
         """
         Constructor
 
         :param in_port: Index of MIDI In Port
         :param out_port: Index of MIDI Out Port
         """
-        super().__init__(in_port, out_port)
+        super().__init__(device_id, in_port, out_port)
 
         self.globalChannel = 0x01
 
         self.__createControls()
+
+    #Overrides IDevice
+    def getDeviceName(self):
+        """
+        :return: the model name of this device
+        """
+        return "X-Touch Compact"
+
+    #Overrides IDevice
+    def getDeviceManufacturer(self):
+        """
+        :return: the manufacturer name of this device
+        """
+        return "Behringer"
 
     def __createControls(self):
         """

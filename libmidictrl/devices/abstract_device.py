@@ -17,14 +17,17 @@ class InputEventHandler(object):
 
 
 class AbstractDevice(IDevice):
-    def __init__(self, in_port, out_port):
+    def __init__(self, device_id: str, in_port, out_port):
         """
         Constructor
+
+        :param device_id: ID of this device
 
         :param in_port: Index of MIDI In Port
         :param out_port: Index of MIDI Out Port
         """
         super().__init__()
+        self.device_id = device_id
 
         self.in_port = in_port
         self.out_port = out_port
@@ -40,6 +43,10 @@ class AbstractDevice(IDevice):
         self.isOpen = False
 
         self._inputEventHandler = None
+
+    #Overrides IDevice
+    def getDeviceID(self) -> str:
+        return self.device_id
 
     def open(self):
         """

@@ -3,6 +3,39 @@ class IDevice:
     """
     Interface declaring methods all devices must implement
     """
+
+    def getDeviceID(self) -> str:
+        """
+        :return: a identifying String for this device
+        """
+        return ""
+
+    def getDeviceName(self):
+        """
+        :return: the model name of this device
+        """
+        return ""
+
+    def getDeviceManufacturer(self):
+        """
+        :return: the manufacturer name of this device
+        """
+        return ""
+
+    def open(self):
+        """
+        Open the MIDI ports for this Device
+        :return:
+        """
+        pass
+
+    def close(self):
+        """
+        Close the MIDI ports for this Device
+        :return:
+        """
+        pass
+
     #region Events
     def addEventListener(self, control: int, note:int, callback):
         """
