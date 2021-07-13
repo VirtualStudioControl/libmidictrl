@@ -93,6 +93,19 @@ class IDevice:
         """
         return []
 
+    def getControlCount(self) -> int:
+        """
+        :return: the total number of Controls for this device
+        """
+        return 0
+
+    def getControlByID(self, id: int):
+        """
+        :param id: ID of the cotrol to return
+        :return: Control with the given ID, or None if not found
+        """
+        return None
+
     #endregion
 
     #region UIControl

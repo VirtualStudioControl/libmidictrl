@@ -1,12 +1,17 @@
 from .abstract_control import AbstractControl
 from ..devices.device_interface import IDevice
 
+from ..midi.protocol.constants import *
+
 
 class Fader(AbstractControl):
     """
     Fader Control
     """
-    def __init__(self, device: IDevice, index: int, channel: int, id_in: int, id_touch: int, id_out: int, layer: int = 0):
+    def __init__(self, device: IDevice, index: int, channel: int, id_in: int, id_touch: int, id_out: int, layer: int = 0,
+                 status_byte_touch_begin: int = STATUS_CONTROL_CHANGE,
+                 status_byte_touch_end: int = STATUS_CONTROL_CHANGE,
+                 status_byte_value_change: int = STATUS_CONTROL_CHANGE):
         """
         Constructor
 
@@ -20,3 +25,7 @@ class Fader(AbstractControl):
         """
         super().__init__(device, index, channel, id_in, id_out, layer)
         self.idTouch = id_touch
+
+        self.status_touch_begin = status_byte_touch_begin
+        self.status_touch_end = status_byte_touch_end
+        self.status_value_changed = status_byte_value_change

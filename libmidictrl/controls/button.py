@@ -1,13 +1,15 @@
 from .abstract_control import AbstractControl
 from ..devices.device_interface import *
 
+from ..midi.protocol.constants import *
 
 class Button(AbstractControl):
     """
     Simple Button Control
     """
 
-    def __init__(self, device: IDevice, index: int, channel: int, id_in: int, id_out: int, layer: int = 0):
+    def __init__(self, device: IDevice, index: int, channel: int, id_in: int, id_out: int, layer: int = 0,
+                 statusbyte_pressed: int = STATUS_NOTE_ON, statusbyte_released: int = STATUS_NOTE_OFF):
         """
         Constructor
 
@@ -20,5 +22,5 @@ class Button(AbstractControl):
         """
         super().__init__(device, index, channel, id_in, id_out, layer)
 
-        self.pressed = False
-        self.toggleMode = False
+        self.statusPressed = statusbyte_pressed
+        self.statusReleased = statusbyte_released

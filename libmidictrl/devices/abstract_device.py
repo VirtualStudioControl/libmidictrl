@@ -84,11 +84,9 @@ class AbstractDevice(IDevice):
 
     # Overrides IDevice
     def addEventListener(self, control: int, note : int, callback):
-        print("Adding Callback:", (control & 0b01110000) >> 4, note & 0b01111111)
         if not self.events[(control & 0b01110000) >> 4]:
             for i in range(128):
                 self.events[(control & 0b01110000) >> 4].append([])
-
 
         self.events[(control & 0b01110000) >> 4][note & 0b01111111].append(callback)
 
@@ -100,6 +98,7 @@ class AbstractDevice(IDevice):
 
     # Overrides IDevice
     def callEventListeners(self, control: int, note: int, message: List[int], deltatime):
+
         if not self.events[(control & 0b01110000) >> 4]:
             return
 
@@ -107,6 +106,37 @@ class AbstractDevice(IDevice):
             cb(message, deltatime)
 
     # endregion
+
+    def getButtons(self) -> list:
+        return self.buttons
+
+    def getFaders(self) -> list:
+        return self.faders
+
+    def getRotaryEncoders(self) -> list:
+        return self.rotarys
+
+    # Overrides IDevice
+    def getControlCount(self) -> int:
+
+        return len(self.getButtons()) + len(self.getFaders()) + len(self.getRotaryEncoders())
+
+    # Overrides IDevice
+    def getControlByID(self, id: int):
+
+        for b in self.getButtons():
+            if b.index == id:
+                return b
+
+        for f in self.getFaders():
+            if f.index == id:
+                return f
+
+        for r in self.getRotaryEncoders():
+            if r.index == id:
+                return r
+
+        return None
 
     # Overrides IDevice
     def sendMIDIMessage(self, message):
