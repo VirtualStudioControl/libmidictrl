@@ -1,13 +1,19 @@
 from typing import List, Optional, Dict
 
 import rtmidi
+
+
 from ..devices.device_interface import IDevice
+
 from ..devices.behringer.xtouch_compact import XTouchCompact
+from ..devices.behringer.xtouch_mini import XTouchMini
 
 __DEVICE_LIST: Optional[List[IDevice]] = None
 
 __DEVICE_DICT: Dict[str, type] = {
-    "X-TOUCH COMPACT": XTouchCompact
+    "X-TOUCH COMPACT": XTouchCompact,
+    "X-TOUCH MINI": XTouchMini
+
 }
 
 
