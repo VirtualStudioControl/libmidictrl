@@ -1,3 +1,4 @@
+from virtualstudio.common.logging import logengine
 from ..abstract_device import AbstractDevice
 from ...controls.button import Button
 from ...controls.fader import Fader
@@ -53,6 +54,8 @@ OPERATION_MODE_STANDARD = 0x00
 OPERATION_MODE_MC = 0x01
 #endregion
 
+logger = logengine.getLogger()
+
 class XTouchMini(AbstractDevice):
     """
     Behringer X-Touch Compact
@@ -66,7 +69,7 @@ class XTouchMini(AbstractDevice):
         """
         super().__init__(device_id, in_port, out_port)
 
-        self.globalChannel = 0x01
+        self.globalChannel = 0x00
 
         self.__createControls()
 
@@ -96,32 +99,32 @@ class XTouchMini(AbstractDevice):
 
         controls = 0
 
-        self.faders.append(Fader(self, index=controls, channel=0x00, id_in=9, id_touch=127, id_out=127,
+        self.faders.append(Fader(self, index=controls, channel=0xa, id_in=9, id_touch=127, id_out=127,
                                  layer=LAYER_A))
         controls += 1
 
         for i in range(8):
-            self.rotarys.append(RotaryEncoder(self, index=controls, channel=0x00, id_in=1 + i, id_click=i,
+            self.rotarys.append(RotaryEncoder(self, index=controls, channel=0xa, id_in=1 + i, id_click=i,
                                               id_out=9 + i, id_mode=1 + i, layer=LAYER_A))
             controls += 1
 
         for i in range(16):
-                self.buttons.append(Button(self, index=controls, channel=0x00, id_in=8 + i, id_out=i, layer=LAYER_A))
+                self.buttons.append(Button(self, index=controls, channel=0xa, id_in=8 + i, id_out=i, layer=LAYER_A))
                 controls += 1
 
         # Layer B
 
-        self.faders.append(Fader(self, index=controls, channel=0x00, id_in=10, id_touch=127, id_out=127,
+        self.faders.append(Fader(self, index=controls, channel=0xa, id_in=10, id_touch=127, id_out=127,
                                  layer=LAYER_B))
         controls += 1
 
         for i in range(8):
-            self.rotarys.append(RotaryEncoder(self, index=controls, channel=0x00, id_in=11 + i, id_click=24+i,
+            self.rotarys.append(RotaryEncoder(self, index=controls, channel=0xa, id_in=11 + i, id_click=24+i,
                                               id_out=9 + i, id_mode=1 + i, layer=LAYER_B))
             controls += 1
 
         for i in range(16):
-                self.buttons.append(Button(self, index=controls, channel=0x00, id_in=32 + i, id_out=i, layer=LAYER_B))
+                self.buttons.append(Button(self, index=controls, channel=0xa, id_in=32 + i, id_out=i, layer=LAYER_B))
                 controls += 1
 
 
@@ -175,8 +178,6 @@ class XTouchMini(AbstractDevice):
     # Overrides IDevice
     def setFaderValue(self, control: Fader, value: int):
         pass # Not Suppoted by Hardware
-        #msg = controlChange(control.channel, control.idIn, value)
-        #self.sendMIDIMessage(msg)
 
     # Overrides IDevice
     def setRotaryValue(self, control: RotaryEncoder, value: int):

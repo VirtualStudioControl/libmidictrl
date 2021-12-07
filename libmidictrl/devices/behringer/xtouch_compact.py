@@ -168,7 +168,6 @@ class XTouchCompact(AbstractDevice):
     # region Feedback
     # Overrides IDevice
     def setButtonLEDState(self, control: Button, state):
-
         msg = noteOn(self.globalChannel, control.idOut, state+1) # state+1 in order to fix off-by-one error in X-Touch Compact Firmware
         self.sendMIDIMessage(msg)
 

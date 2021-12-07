@@ -1,6 +1,7 @@
 from typing import List
 import rtmidi
 
+from virtualstudio.common.logging import logengine
 from .device_interface import IDevice
 
 
@@ -14,6 +15,9 @@ class InputEventHandler(object):
     def __call__(self, event, data=None):
         message, deltatime = event
         self.device.callEventListeners(message[0], message[1], message, deltatime)
+
+
+logger = logengine.getLogger()
 
 
 class AbstractDevice(IDevice):
@@ -140,4 +144,5 @@ class AbstractDevice(IDevice):
 
     # Overrides IDevice
     def sendMIDIMessage(self, message):
+        logger.debug(message)
         self.midiOut.send_message(message)
