@@ -145,4 +145,7 @@ class AbstractDevice(IDevice):
     # Overrides IDevice
     def sendMIDIMessage(self, message):
         logger.debug(message)
-        self.midiOut.send_message(message)
+        if self.isOpen:
+            self.midiOut.send_message(message)
+        else:
+            logger.error("Trying to send message to closed device !")
